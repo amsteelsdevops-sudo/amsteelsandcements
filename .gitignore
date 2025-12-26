@@ -1,0 +1,12 @@
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+Thumbs.db
+Desktop.ini
+
+# Project specific
+hero-bg.png
+node_modules/
+.DS_Store
