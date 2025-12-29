@@ -226,7 +226,11 @@
                         <textarea id="message" placeholder="Tell us about your project requirements..."
                             required></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary">
+
+                    <!-- Status Message Area -->
+                    <div id="formStatus" class="form-status"></div>
+
+                    <button type="submit" class="btn btn-primary" id="submitBtn">
                         Submit Quote Request
                     </button>
                     <p class="text-center mt-3" style="grid-column: span 2; font-size: 0.875rem;">
@@ -325,32 +329,78 @@
 
         // Form Handling
         const quoteForm = document.getElementById('quoteForm');
+
+        // PASTE YOUR GOOGLE SCRIPT URL HERE
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxdQ3JiumqNVP4mwL1AwS02HURMTgEu32KcZmD6rGQEv0qvneoZHTYKn1QpOnLEezeoSA/exec";
+
         if (quoteForm) {
             quoteForm.addEventListener('submit', function (e) {
                 e.preventDefault();
 
-                const name = document.getElementById('name').value;
-                const phone = document.getElementById('phone').value;
-                const product = document.getElementById('product').value;
-                const message = document.getElementById('message').value;
-
-                // Construct WhatsApp message
-                const whatsappText = `Hi AM Steels & Cements, I'm ${name}. I'm interested in ${product}. %0A%0AProject Details: ${message}%0A%0AMy Phone: ${phone}`;
-                const whatsappUrl = `https://wa.me/919567246724?text=${whatsappText}`;
-
-                // Open WhatsApp in new tab
-                window.open(whatsappUrl, '_blank');
-
-                // Show success state
-                const submitBtn = quoteForm.querySelector('button[type="submit"]');
+                const submitBtn = document.getElementById('submitBtn');
                 const originalText = submitBtn.innerText;
-                submitBtn.innerText = "Redirecting to WhatsApp...";
-                submitBtn.style.background = "#25D366";
+                const statusDiv = document.getElementById('formStatus');
 
-                setTimeout(() => {
+                // Gather data
+                const formData = {
+                    name: document.getElementById('name').value,
+                    phone: document.getElementById('phone').value,
+                    email: document.getElementById('email').value,
+                    product: document.getElementById('product').value,
+                    message: document.getElementById('message').value
+                };
+
+                // UI Loading State
+                submitBtn.disabled = true;
+                submitBtn.innerText = "Sending Details...";
+                statusDiv.className = 'form-status';
+                statusDiv.style.display = 'none';
+
+                // Check if URL is set
+                if (SCRIPT_URL === "YOUR_GOOGLE_SCRIPT_URL_HERE") {
+                    alert("Please configure the Google Script URL in the code first!");
+                    submitBtn.disabled = false;
                     submitBtn.innerText = originalText;
-                    submitBtn.style.background = "";
-                }, 3000);
+                    return;
+                }
+
+                // Send to Google Script
+                fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', // Important for Google Apps Script
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                })
+                    .then(response => {
+                        // With no-cors, we can't check response.ok. We assume success if no network error.
+                        // Show success
+                        statusDiv.innerText = "Thanks! Details sent. Redirecting to WhatsApp...";
+                        statusDiv.classList.add('success');
+                        submitBtn.style.background = "#25D366";
+
+                        // Construct WhatsApp message
+                        const whatsappText = `Hi AM Steels, I'm ${formData.name}. Contact: ${formData.phone}. Interested in ${formData.product}. Project: ${formData.message}`;
+                        const whatsappUrl = `https://wa.me/919567246724?text=${encodeURIComponent(whatsappText)}`;
+
+                        // Redirect after short delay
+                        setTimeout(() => {
+                            window.open(whatsappUrl, '_blank');
+                            quoteForm.reset();
+                            submitBtn.disabled = false;
+                            submitBtn.innerText = originalText;
+                            submitBtn.style.background = "";
+                            statusDiv.style.display = 'none';
+                        }, 2000);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        statusDiv.innerText = "Something went wrong. Please try WhatsApp directly.";
+                        statusDiv.classList.add('error');
+                        submitBtn.disabled = false;
+                        submitBtn.innerText = originalText;
+                    });
             });
         }
     </script>

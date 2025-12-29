@@ -276,6 +276,108 @@ p {
   }
 }
 
+/* === Contact Section === */
+.contact-container {
+  display: flex;
+  justify-content: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.contact-form {
+  width: 100%;
+  background: white;
+  padding: var(--space-2xl);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-lg);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: var(--neutral-900);
+  font-size: 0.95rem;
+}
+
+.contact-form input,
+.contact-form select,
+.contact-form textarea {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border: 2px solid var(--neutral-200);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-primary);
+  font-size: 1rem;
+  transition: all var(--transition-fast);
+  background: var(--neutral-100);
+}
+
+.contact-form input:focus,
+.contact-form select:focus,
+.contact-form textarea:focus {
+  outline: none;
+  border-color: var(--primary-orange);
+  background: white;
+  box-shadow: 0 0 0 4px rgba(255, 87, 34, 0.1);
+}
+
+.contact-form textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+.contact-form button[type="submit"] {
+  grid-column: 1 / -1;
+  width: 100%;
+  justify-content: center;
+  margin-top: var(--space-sm);
+  font-size: 1.125rem;
+  padding: 1rem;
+}
+
+/* Form Status Messages */
+.form-status {
+  grid-column: 1 / -1;
+  padding: 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  text-align: center;
+  display: none;
+}
+
+.form-status.success {
+  display: block;
+  background-color: #d1fae5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.form-status.error {
+  display: block;
+  background-color: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+@media (max-width: 600px) {
+  .contact-form {
+    padding: var(--space-lg);
+    grid-template-columns: 1fr;
+  }
+}
+
 /* === Button Styles === */
 .btn {
   display: inline-flex;
