@@ -791,19 +791,38 @@ p {
 
 /* === Responsive Design === */
 @media (max-width: 768px) {
-  .hero-cta {
-    flex-direction: column;
-    align-items: center;
+
+  /* Container padding reduction for mobile */
+  .container {
+    padding: 0 var(--space-sm);
   }
 
-  .btn {
-    width: 100%;
-    max-width: 300px;
-    justify-content: center;
+  /* Make testimonial cards more responsive */
+  .testimonial-card {
+    min-width: 85vw;
+    /* Use viewport width instead of fixed px */
+    max-width: 90vw;
   }
 
   .products-grid {
     grid-template-columns: 1fr;
+    /* Ensure no overflow issues */
+    width: 100%;
+    margin-top: var(--space-xl);
+  }
+
+  /* Fix Hero CTA layout */
+  .hero-cta {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .btn {
+    width: 100%;
+    max-width: 100%;
+    /* Allow full width */
+    justify-content: center;
   }
 
   .section {
