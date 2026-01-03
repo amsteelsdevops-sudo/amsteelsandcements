@@ -642,13 +642,40 @@ p {
 }
 
 .testimonials-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
   gap: var(--space-lg);
   margin-top: var(--space-2xl);
+  padding: 1rem 0.5rem var(--space-md) 0.5rem;
+  /* Add horizontal padding to prevent cut-off shadows */
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  /* Firefox */
+  scrollbar-color: var(--primary-orange) transparent;
+}
+
+/* Custom Scrollbar for Chrome/Safari/Edge */
+.testimonials-grid::-webkit-scrollbar {
+  height: 8px;
+}
+
+.testimonials-grid::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.testimonials-grid::-webkit-scrollbar-thumb {
+  background-color: var(--primary-orange);
+  border-radius: 4px;
 }
 
 .testimonial-card {
+  min-width: 350px;
+  max-width: 400px;
+  flex: 0 0 auto;
+  scroll-snap-align: center;
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -775,8 +802,7 @@ p {
     justify-content: center;
   }
 
-  .products-grid,
-  .testimonials-grid {
+  .products-grid {
     grid-template-columns: 1fr;
   }
 
